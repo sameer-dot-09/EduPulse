@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPulse | Student Performance Predictor</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 25px 30px;
+            width: 420px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 10px;
+            background: #2cb489;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1f8a6a;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 12px;
+            background: #ecf9f1;
+            border-left: 5px solid #2ecc71;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .footer {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>EduPulse</h2>
+
+    <form action="/predict" method="post">
+
+        <label>G1 – First Period Grade</label>
+        <input type="number" name="G1" min="0" max="20" required>
+
+        <label>G2 – Second Period Grade</label>
+        <input type="number" name="G2" min="0" max="20" required>
+
+        <label>Study Time (1–4)</label>
+        <input type="number" name="studytime" min="1" max="4" required>
+
+        <label>Failures</label>
+        <input type="number" name="failures" min="0" max="4" required>
+
+        <label>Health (1–5)</label>
+        <input type="number" name="health" min="1" max="5" required>
+
+        <label>Free Time (1–5)</label>
+        <input type="number" name="freetime" min="1" max="5" required>
+
+        <label>Daily Alcohol Consumption (Dalc) (1-5)</label>
+        <input type="number" name="Dalc" min="1" max="5" required>
+
+        <label>Weekend Alcohol Consumption (Walc) (1-5)</label>
+        <input type="number" name="Walc" min="1" max="5" required>
+
+        <label>Family Support</label>
+        <select name="famsup">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select>
+
+        <label>School Support</label>
+        <select name="schoolsup">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select>
+
+        <label>Paid Classes</label>
+        <select name="paid">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select>
+
+        <label>Internet Access</label>
+        <select name="internet">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select>
+
+        <label>Extra Activities</label>
+        <select name="activities">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select>
+
+        <button type="submit">Predict Final Grade</button>
+    </form>
+
+    {% if prediction is not none %}
+        <div class="result">
+            Predicted Final Grade G3: {{ prediction }} <br>
+            Status: <strong>{{ category }}</strong>
+        </div>
+    {% endif %}
+
+    <div class="footer">
+        EduPulse 
+    </div>
+</div>
+
+</body>
+</html>
