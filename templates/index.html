@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduPulse | Student Performance Predictor</title>
 
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,17 +18,36 @@
             min-height: 100vh;
         }
 
+        /* MAIN LAYOUT */
+        .main-layout {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        /* LEFT PANEL */
+        .left-panel {
+            width: 420px;
+        }
+
         .container {
             background: white;
             padding: 25px 30px;
-            width: 420px;
             border-radius: 10px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
 
-        h2 {
+        /* RIGHT PANEL */
+        .right-panel {
+            width: 420px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        h2, h3 {
             text-align: center;
-            margin-bottom: 20px;
             color: #2c3e50;
         }
 
@@ -78,79 +100,121 @@
 </head>
 <body>
 
-<div class="container">
-    <h2>EduPulse</h2>
+<div class="main-layout">
 
-    <form action="/predict" method="post">
+    <!-- LEFT SIDE: FORM + RESULT -->
+    <div class="left-panel">
+        <div class="container">
+            <h2>EduPulse</h2>
 
-        <label>G1 – First Period Grade</label>
-        <input type="number" name="G1" min="0" max="20" required>
+            <form action="/predict" method="post">
 
-        <label>G2 – Second Period Grade</label>
-        <input type="number" name="G2" min="0" max="20" required>
+                <label>G1 – First Period Grade</label>
+                <input type="number" name="G1" min="0" max="20" required>
 
-        <label>Study Time (1–4)</label>
-        <input type="number" name="studytime" min="1" max="4" required>
+                <label>G2 – Second Period Grade</label>
+                <input type="number" name="G2" min="0" max="20" required>
 
-        <label>Failures</label>
-        <input type="number" name="failures" min="0" max="4" required>
+                <label>Study Time (1–4)</label>
+                <input type="number" name="studytime" min="1" max="4" required>
 
-        <label>Health (1–5)</label>
-        <input type="number" name="health" min="1" max="5" required>
+                <label>Failures</label>
+                <input type="number" name="failures" min="0" max="4" required>
 
-        <label>Free Time (1–5)</label>
-        <input type="number" name="freetime" min="1" max="5" required>
+                <label>Health (1–5)</label>
+                <input type="number" name="health" min="1" max="5" required>
 
-        <label>Daily Alcohol Consumption (Dalc) (1-5)</label>
-        <input type="number" name="Dalc" min="1" max="5" required>
+                <label>Free Time (1–5)</label>
+                <input type="number" name="freetime" min="1" max="5" required>
 
-        <label>Weekend Alcohol Consumption (Walc) (1-5)</label>
-        <input type="number" name="Walc" min="1" max="5" required>
+                <label>Daily Alcohol Consumption (Dalc)</label>
+                <input type="number" name="Dalc" min="1" max="5" required>
 
-        <label>Family Support</label>
-        <select name="famsup">
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-        </select>
+                <label>Weekend Alcohol Consumption (Walc)</label>
+                <input type="number" name="Walc" min="1" max="5" required>
 
-        <label>School Support</label>
-        <select name="schoolsup">
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-        </select>
+                <label>Family Support</label>
+                <select name="famsup">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
 
-        <label>Paid Classes</label>
-        <select name="paid">
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-        </select>
+                <label>School Support</label>
+                <select name="schoolsup">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
 
-        <label>Internet Access</label>
-        <select name="internet">
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-        </select>
+                <label>Paid Classes</label>
+                <select name="paid">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
 
-        <label>Extra Activities</label>
-        <select name="activities">
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-        </select>
+                <label>Internet Access</label>
+                <select name="internet">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
 
-        <button type="submit">Predict Final Grade</button>
-    </form>
+                <label>Extra Activities</label>
+                <select name="activities">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
 
-    {% if prediction is not none %}
-        <div class="result">
-            Predicted Final Grade G3: {{ prediction }} <br>
-            Status: <strong>{{ category }}</strong>
+                <button type="submit">Predict Final Grade</button>
+            </form>
+
+            {% if prediction is not none %}
+                <div class="result">
+                    Predicted Final Grade (G3): {{ prediction }} <br>
+                    Status: <strong>{{ category }}</strong>
+                </div>
+            {% endif %}
+
+            <div class="footer">
+                EduPulse • ML + Flask Project
+            </div>
         </div>
+    </div>
+
+    <!-- RIGHT SIDE: GRAPH -->
+    {% if prediction is not none %}
+    <div class="right-panel">
+        <h3>G2 vs Predicted G3</h3>
+        <canvas id="gradeChart" width="380" height="260"></canvas>
+    </div>
     {% endif %}
 
-    <div class="footer">
-        EduPulse 
-    </div>
 </div>
+
+{% if prediction is not none %}
+<script>
+    const ctx = document.getElementById('gradeChart').getContext('2d');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['G2 (Second Period)', 'Predicted G3'],
+            datasets: [{
+                label: 'Grade Comparison',
+                data: [{{ g2 }}, {{ prediction }}],
+                backgroundColor: ['#3498db', '#2ecc71']
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 20
+                }
+            }
+        }
+    });
+</script>
+{% endif %}
 
 </body>
 </html>

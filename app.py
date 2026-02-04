@@ -51,12 +51,14 @@ def predict():
     elif prediction >= 10:
         category = "Average Performance "
     else:
-        category = "At Risk "
+        category = "At Risk " \
+        ""
 
     return render_template(
         "index.html",
         prediction=prediction,
-        category=category
+        category=category,
+        g2=data["G2"]     # this for chart 
     )
 
 
