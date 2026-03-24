@@ -6,7 +6,7 @@
 
 ## 🔎 TL;DR (Quick Summary)
 - 📌 End-to-end Machine Learning project (EDA → Modeling → Deployment)
-- 🎯 Goal: Predict student final grades (G3)
+- 🎯 Goal: Predict student final grades (G3) by analysing (G2)
 - 🏆 Best Model: Decision Tree Regressor (R² ≈ 0.78)
 - 🌐 Deployed using Flask with interactive UI
 - 🛠 Tech: Python, Pandas, Scikit-learn, Flask
@@ -41,12 +41,13 @@ This project uses **machine learning** to predict final grades early, helping id
 
 ## 🧠 Key Features
 
-- Exploratory Data Analysis (EDA) for insight extraction
-- Feature selection using correlation and importance analysis
-- Multiple regression models for comparison
-- Model evaluation using MAE, RMSE, and R² score
-- Flask-based web UI for real-time prediction
-- Visual comparison of predicted vs actual performance
+-Conducted in-depth Exploratory Data Analysis (EDA) to uncover patterns, trends, and key business insights
+-Applied feature engineering and selection techniques (correlation analysis, feature importance) to improve model performance
+-Built and compared multiple regression models (e.g., Linear Regression, Random Forest, XGBoost) for optimal prediction accuracy
+-Evaluated models using robust performance metrics such as MAE, RMSE, and R² to ensure reliability
+-Developed a Flask-based interactive web application for real-time predictions and user input handling
+-Visualized predicted vs actual results using graphs to assess model accuracy and performance
+-Implemented end-to-end ML pipeline from data preprocessing to deployment
 
 ---
 
@@ -229,7 +230,8 @@ http://127.0.0.1:5000
 
 ## 📬 Contact
 
-**Author:** Om Thombare  
+**Author:** Om Thombare
+**Contributers:** Sameer Bhor ,Ramessh Rathod
 **Domain:** Data Science / Machine Learning  
 
 Feel free to connect or provide feedback!
